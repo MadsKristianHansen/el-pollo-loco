@@ -15,19 +15,19 @@ window.addEventListener("keydown", (e) => {
   }
 
   if (e.keyCode == 37) {
-    keyboard.RIGHT = true;
+    keyboard.LEFT = true;
   }
 
   if (e.keyCode == 38) {
-    keyboard.RIGHT = true;
+    keyboard.UP = true;
   }
 
   if (e.keyCode == 40) {
-    keyboard.RIGHT = true;
+    keyboard.DOWN = true;
   }
 
   if (e.keyCode == 32) {
-    keyboard.RIGHT = true;
+    keyboard.SPACE = true;
   }
 });
 
@@ -37,18 +37,18 @@ window.addEventListener("keyup", (e) => {
   }
 
   if (e.keyCode == 37) {
-    keyboard.RIGHT = false;
+    keyboard.LEFT = false;
   }
 
   if (e.keyCode == 38) {
-    keyboard.RIGHT = false;
+    keyboard.UP = false;
   }
 
   if (e.keyCode == 40) {
-    keyboard.RIGHT = false;
+    keyboard.DOWN = false;
   }
 
   if (e.keyCode == 32) {
-    keyboard.RIGHT = false;
+    keyboard.SPACE = false;
   }
 });
