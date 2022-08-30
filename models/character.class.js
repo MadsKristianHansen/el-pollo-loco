@@ -1,7 +1,7 @@
 class Character extends MovableObject {
   height = 280;
   width = 150;
-  y = 50;
+  y = 150;
   speed = 10;
   IMAGES_WALKING = [
     "../img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-21.png",
@@ -12,16 +12,11 @@ class Character extends MovableObject {
     "../img/2.Secuencias_Personaje-Pepe-corrección/2.Secuencia_caminata/W-26.png",
   ];
   IMAGES_JUMPING = [
-    "img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-31.png",
-    "img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-32.png",
-    "img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-33.png",
     "img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-34.png",
     "img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-35.png",
     "img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-36.png",
     "img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-37.png",
     "img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-38.png",
-    "img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-39.png",
-    "img/2.Secuencias_Personaje-Pepe-corrección/3.Secuencia_salto/J-40.png",
   ];
   world;
   walking_sound = new Audio("audio/running.mp3");
@@ -60,17 +55,23 @@ class Character extends MovableObject {
     }, 1000 / 60);
 
     setInterval(() => {
-      if (this.isAboveGround()) {
-        this.playAnimation(this.IMAGES_JUMPING);
-      } else {
-        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-          this.playAnimation(this.IMAGES_WALKING);
-        }
+      if (
+        (this.world.keyboard.RIGHT && !this.isAboveGround()) ||
+        (this.world.keyboard.LEFT && !this.isAboveGround())
+      ) {
+        this.playAnimation(this.IMAGES_WALKING);
       }
     }, 50);
+
+    setInterval(() => {
+      if (this.isAboveGround()) {
+        this.playAnimation(this.IMAGES_JUMPING);
+      }
+    }, 193);
   }
 
   jump() {
     this.speedY = 30;
+    this.currentImage = 0;
   }
 }
