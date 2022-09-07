@@ -1,11 +1,4 @@
-class MovableObject {
-  x = 120;
-  y = 100;
-  img;
-  height = 100;
-  width = 100;
-  imageCache = {};
-  currentImage = 0;
+class MovableObject extends DrawableObject {
   speed = 0.15;
   otherDirection = false;
   speedY = 0;
@@ -26,19 +19,6 @@ class MovableObject {
     return this.y < 150;
   }
 
-  loadImage(path) {
-    this.img = new Image();
-    this.img.src = path;
-  }
-
-  loadImages(arr) {
-    arr.forEach((path) => {
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
-    });
-  }
-
   playAnimation(images) {
     let i = this.currentImage % images.length;
     let path = images[i];
@@ -52,10 +32,6 @@ class MovableObject {
 
   moveRight() {
     this.x += this.speed;
-  }
-
-  draw(ctx) {
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
   }
 
   drawFrame(ctx) {
