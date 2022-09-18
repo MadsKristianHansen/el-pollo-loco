@@ -6,6 +6,10 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = new StatusBar();
+  throwableObjects = [];
+  collectedBottles = [];
+  collect_bottle_sound = new Audio("audio/bottle_collect.mp3");
+  throw_bottle_sound = new Audio("audio/bottle_throw.mp3");
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -13,7 +17,7 @@ class World {
     this.keyboard = keyboard;
     this.draw();
     this.setWorld();
-    this.checkCollisions();
+    this.runChecks();
   }
 
   setWorld() {
@@ -33,7 +37,9 @@ class World {
 
     this.addObjectsToMap(this.level.clouds);
     this.addToMap(this.character);
+    this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.level.enemies);
+    this.addObjectsToMap(this.throwableObjects);
 
     this.ctx.translate(-this.camera_x, 0);
 
@@ -74,7 +80,21 @@ class World {
     this.ctx.restore();
   }
 
+  runChecks() {
+    setInterval(() => {
+      this.checkCollisions();
+    }, 1000 / 25);
+    setInterval(() => {
+      this.checkThrowObjects();
+    }, 200);
+  }
+
   checkCollisions() {
+    this.checkCollisionsEnemy();
+    this.checkCollisionsBottles();
+  }
+
+  checkCollisionsEnemy() {
     setInterval(() => {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
@@ -83,5 +103,27 @@ class World {
         }
       });
     }, 200);
+  }
+
+  checkCollisionsBottles() {
+    this.level.bottles.forEach((bottle) => {
+      if (this.character.isColliding(bottle)) {
+        this.collectedBottles.push(bottle);
+        this.level.bottles.splice(bottle, 1);
+        this.collect_bottle_sound.play();
+      }
+    });
+  }
+
+  checkThrowObjects() {
+    if (this.keyboard.D && this.collectedBottles.length > 0) {
+      let bottle = new ThrowableObject(
+        this.character.x + 100,
+        this.character.y + 100
+      );
+      this.throwableObjects.push(bottle);
+      this.collectedBottles.pop();
+      this.throw_bottle_sound.play();
+    }
   }
 }
