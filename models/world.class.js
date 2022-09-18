@@ -8,6 +8,7 @@ class World {
   healthBar = new StatusBar(20, 0, 100, 1);
   bottleBar = new StatusBar(195, 0, 0, 2);
   coinBar = new StatusBar(370, 0, 0, 3);
+  endbossBar = new StatusBar(540, 0, 100, 4);
   throwableObjects = [];
   collectedBottles = [];
   collectedCoins = [];
@@ -39,6 +40,7 @@ class World {
     this.addToMap(this.healthBar);
     this.addToMap(this.bottleBar);
     this.addToMap(this.coinBar);
+    this.addToMap(this.endbossBar);
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjectsToMap(this.level.clouds);
@@ -100,6 +102,7 @@ class World {
     this.checkCollisionsEnemy();
     this.checkCollisionsBottles();
     this.checkCollisionsCoins();
+    this.checkCollisionsEndboss();
   }
 
   checkCollisionsEnemy() {
@@ -132,6 +135,19 @@ class World {
         this.coinBar.setPercentage(this.collectedCoins.length * 5);
         this.collect_coin.play();
       }
+    });
+  }
+
+  checkCollisionsEndboss() {
+    this.throwableObjects.forEach((to) => {
+      this.level.enemies.forEach((enemy) => {
+        if (to.isColliding(enemy) && enemy instanceof Endboss) {
+          enemy.hit();
+
+          enemy.isHurt();
+          this.endbossBar.setPercentage(enemy.energy);
+        }
+      });
     });
   }
 

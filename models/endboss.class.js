@@ -2,6 +2,7 @@ class Endboss extends MovableObject {
   height = 400;
   width = 250;
   y = 55;
+  hurt_chicken_sound = new Audio("audio/chicken_hurt.mp3");
 
   IMAGES_ALERT = [
     "img/4.Secuencias_Enemy_gigantón-Doña_Gallinota-/2.Ateción-ataque/1.Alerta/G5.png",
@@ -14,16 +15,37 @@ class Endboss extends MovableObject {
     "img/4.Secuencias_Enemy_gigantón-Doña_Gallinota-/2.Ateción-ataque/1.Alerta/G12.png",
   ];
 
+  IMAGES_DEAD = [
+    "img/4.Secuencias_Enemy_gigantón-Doña_Gallinota-/4.Muerte/G24.png",
+    "img/4.Secuencias_Enemy_gigantón-Doña_Gallinota-/4.Muerte/G25.png",
+    "img/4.Secuencias_Enemy_gigantón-Doña_Gallinota-/4.Muerte/G26.png",
+  ];
+
+  IMAGES_HIT = [
+    "img/4.Secuencias_Enemy_gigantón-Doña_Gallinota-/3.Herida/G21.png",
+    "img/4.Secuencias_Enemy_gigantón-Doña_Gallinota-/3.Herida/G22.png",
+    "img/4.Secuencias_Enemy_gigantón-Doña_Gallinota-/3.Herida/G23.png",
+  ];
+
   constructor() {
     super().loadImage(this.IMAGES_ALERT[0]);
     this.loadImages(this.IMAGES_ALERT);
+    this.loadImages(this.IMAGES_HIT);
+    this.loadImages(this.IMAGES_DEAD);
     this.x = 3400;
     this.animate();
   }
 
   animate() {
     setInterval(() => {
-      this.playAnimation(this.IMAGES_ALERT);
+      if (this.isDead()) {
+        this.playAnimation(this.IMAGES_DEAD);
+      } else if (this.isHurt()) {
+        this.playAnimation(this.IMAGES_HIT);
+        this.hurt_chicken_sound.play();
+      } else {
+        this.playAnimation(this.IMAGES_ALERT);
+      }
     }, 200);
   }
 }

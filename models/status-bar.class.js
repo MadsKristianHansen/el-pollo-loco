@@ -26,6 +26,15 @@ class StatusBar extends DrawableObject {
     "img/7.Marcadores/Barra/Marcador moneda/azul/100_.png",
   ];
 
+  IMAGES_BOSS = [
+    "img/7.Marcadores/Barra/Marcador vida/azul/0_.png",
+    "img/7.Marcadores/Barra/Marcador vida/azul/20_.png",
+    "img/7.Marcadores/Barra/Marcador vida/azul/40_.png",
+    "img/7.Marcadores/Barra/Marcador vida/azul/60_.png",
+    "img/7.Marcadores/Barra/Marcador vida/azul/80_.png",
+    "img/7.Marcadores/Barra/Marcador vida/azul/100_.png",
+  ];
+
   percentage = 100;
 
   constructor(x, y, percent, i) {
@@ -46,6 +55,8 @@ class StatusBar extends DrawableObject {
       return this.IMAGES_BOTTLE;
     } else if (i == 3) {
       return this.IMAGES_COIN;
+    } else if (i == 4) {
+      return this.IMAGES_BOSS;
     }
   }
 
