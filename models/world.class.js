@@ -6,9 +6,12 @@ class World {
   keyboard;
   camera_x = 0;
   healthBar = new StatusBar(20, 0, 100, 1);
-  bottleBar = new StatusBar(200, 0, 0, 2);
+  bottleBar = new StatusBar(195, 0, 0, 2);
+  coinBar = new StatusBar(370, 0, 0, 3);
   throwableObjects = [];
   collectedBottles = [];
+  collectedCoins = [];
+  collect_coin = new Audio("audio/collect_coin.mp3");
   collect_bottle_sound = new Audio("audio/bottle_collect.mp3");
   throw_bottle_sound = new Audio("audio/bottle_throw.mp3");
 
@@ -35,11 +38,13 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.healthBar);
     this.addToMap(this.bottleBar);
+    this.addToMap(this.coinBar);
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjectsToMap(this.level.clouds);
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.bottles);
+    this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
 
@@ -94,6 +99,7 @@ class World {
   checkCollisions() {
     this.checkCollisionsEnemy();
     this.checkCollisionsBottles();
+    this.checkCollisionsCoins();
   }
 
   checkCollisionsEnemy() {
@@ -114,6 +120,17 @@ class World {
         this.bottleBar.setPercentage(this.collectedBottles.length * 5);
         this.level.bottles.splice(bottle, 1);
         this.collect_bottle_sound.play();
+      }
+    });
+  }
+
+  checkCollisionsCoins() {
+    this.level.coins.forEach((coin) => {
+      if (this.character.isColliding(coin)) {
+        this.collectedCoins.push(coin);
+        this.level.coins.splice(coin, 1);
+        this.coinBar.setPercentage(this.collectedCoins.length * 5);
+        this.collect_coin.play();
       }
     });
   }
