@@ -5,7 +5,8 @@ class World {
   canvas;
   keyboard;
   camera_x = 0;
-  statusBar = new StatusBar();
+  healthBar = new StatusBar(20, 0, 100, 1);
+  bottleBar = new StatusBar(200, 0, 0, 2);
   throwableObjects = [];
   collectedBottles = [];
   collect_bottle_sound = new Audio("audio/bottle_collect.mp3");
@@ -32,7 +33,8 @@ class World {
     this.addObjectsToMap(this.level.backgroundObjects);
 
     this.ctx.translate(-this.camera_x, 0);
-    this.addToMap(this.statusBar);
+    this.addToMap(this.healthBar);
+    this.addToMap(this.bottleBar);
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjectsToMap(this.level.clouds);
@@ -99,7 +101,7 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
           this.character.hit();
-          this.statusBar.setPercentage(this.character.energy);
+          this.healthBar.setPercentage(this.character.energy);
         }
       });
     }, 200);
@@ -109,6 +111,7 @@ class World {
     this.level.bottles.forEach((bottle) => {
       if (this.character.isColliding(bottle)) {
         this.collectedBottles.push(bottle);
+        this.bottleBar.setPercentage(this.collectedBottles.length * 5);
         this.level.bottles.splice(bottle, 1);
         this.collect_bottle_sound.play();
       }
@@ -123,6 +126,7 @@ class World {
       );
       this.throwableObjects.push(bottle);
       this.collectedBottles.pop();
+      this.bottleBar.setPercentage(this.collectedBottles.length * 5);
       this.throw_bottle_sound.play();
     }
   }

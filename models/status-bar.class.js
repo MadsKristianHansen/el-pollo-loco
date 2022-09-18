@@ -1,5 +1,5 @@
 class StatusBar extends DrawableObject {
-  IMAGES = [
+  IMAGES_LIFE = [
     "img/7.Marcadores/Barra/Marcador vida/azul/0_.png",
     "img/7.Marcadores/Barra/Marcador vida/azul/20_.png",
     "img/7.Marcadores/Barra/Marcador vida/azul/40_.png",
@@ -7,21 +7,39 @@ class StatusBar extends DrawableObject {
     "img/7.Marcadores/Barra/Marcador vida/azul/80_.png",
     "img/7.Marcadores/Barra/Marcador vida/azul/100_.png",
   ];
+
+  IMAGES_BOTTLE = [
+    "img/7.Marcadores/Barra/Marcador_botella/Azul/0_.png",
+    "img/7.Marcadores/Barra/Marcador_botella/Azul/20_.png",
+    "img/7.Marcadores/Barra/Marcador_botella/Azul/40_.png",
+    "img/7.Marcadores/Barra/Marcador_botella/Azul/60_.png",
+    "img/7.Marcadores/Barra/Marcador_botella/Azul/80_.png",
+    "img/7.Marcadores/Barra/Marcador_botella/Azul/100_.png",
+  ];
   percentage = 100;
 
-  constructor() {
+  constructor(x, y, percent, i) {
     super();
-    this.loadImages(this.IMAGES);
-    this.x = 40;
-    this.y = 0;
-    this.width = 200;
-    this.height = 60;
-    this.setPercentage(100);
+    this.image = this.statusbarImages(i);
+    this.loadImages(this.image);
+    this.x = x;
+    this.y = y;
+    this.width = 150;
+    this.height = 40;
+    this.setPercentage(percent);
+  }
+
+  statusbarImages(i) {
+    if (i == 1) {
+      return this.IMAGES_LIFE;
+    } else if (i == 2) {
+      return this.IMAGES_BOTTLE;
+    }
   }
 
   setPercentage(percentage) {
     this.percentage = percentage;
-    let path = this.IMAGES[this.resolveImageIndex()];
+    let path = this.image[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
 
