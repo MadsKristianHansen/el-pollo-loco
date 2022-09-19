@@ -33,6 +33,10 @@ window.addEventListener("keydown", (e) => {
   if (e.keyCode == 68) {
     keyboard.D = true;
   }
+
+  if (e.keyCode == 39 || 37 || 38 || 40 || 32) {
+    keyboard.KEY_PRESS = true;
+  }
 });
 
 window.addEventListener("keyup", (e) => {
