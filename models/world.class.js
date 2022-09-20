@@ -7,8 +7,8 @@ class World {
   keyboard;
   camera_x = 0;
   healthBar = new StatusBar(20, 0, 100, 1);
-  bottleBar = new StatusBar(195, 0, 0, 2);
-  coinBar = new StatusBar(370, 0, 0, 3);
+  bottleBar = new StatusBar(370, 0, 0, 2);
+  coinBar = new StatusBar(195, 0, 0, 3);
   endbossBar = new StatusBar(540, 0, 100, 4);
   throwableObjects = [];
   collectedBottles = [];
@@ -71,7 +71,7 @@ class World {
     }
 
     mo.draw(this.ctx);
-    mo.drawFrame(this.ctx);
+    // mo.drawFrame(this.ctx);
 
     if (mo.otherDirection) {
       this.flipImageBack(mo);
