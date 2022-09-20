@@ -3,6 +3,7 @@ class World {
   level = level1;
   ctx;
   canvas;
+  coinBonus = false;
   keyboard;
   camera_x = 0;
   healthBar = new StatusBar(20, 0, 100, 1);
@@ -102,6 +103,7 @@ class World {
       this.checkCollisionsEnemy();
       this.checkCollisionsBottles();
       this.checkCollisionsCoins();
+      this.checkCollectedCoins();
       this.checkBottleCollisionsWithEnemy();
     }, 1000 / 25);
   }
@@ -149,6 +151,14 @@ class World {
         this.collect_coin.play();
       }
     });
+  }
+
+  checkCollectedCoins() {
+    if (this.collectedCoins.length == 20 && !this.coinBonus) {
+      this.character.energy = 100;
+      this.healthBar.setPercentage(this.character.energy);
+      this.coinBonus = true;
+    }
   }
 
   checkBottleCollisionsWithEnemy() {
