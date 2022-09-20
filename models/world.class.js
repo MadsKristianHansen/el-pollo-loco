@@ -102,7 +102,7 @@ class World {
       this.checkCollisionsEnemy();
       this.checkCollisionsBottles();
       this.checkCollisionsCoins();
-      this.checkCollisionsEndboss();
+      this.checkBottleCollisionsWithEnemy();
     }, 1000 / 25);
   }
 
@@ -151,7 +151,7 @@ class World {
     });
   }
 
-  checkCollisionsEndboss() {
+  checkBottleCollisionsWithEnemy() {
     this.throwableObjects.forEach((to) => {
       this.level.enemies.forEach((enemy) => {
         if (to.isColliding(enemy) && enemy instanceof Endboss) {
@@ -159,6 +159,8 @@ class World {
 
           enemy.isHurt();
           this.endbossBar.setPercentage(enemy.energy);
+        } else if (to.isColliding(enemy) && enemy instanceof Chicken) {
+          enemy.chickenAlive = false;
         }
       });
     });
