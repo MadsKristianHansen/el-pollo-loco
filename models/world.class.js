@@ -90,30 +90,43 @@ class World {
   }
 
   runChecks() {
-    setInterval(() => {
-      this.checkCollisions();
-    }, 1000 / 25);
+    this.checkCollisions();
+
     setInterval(() => {
       this.checkThrowObjects();
     }, 200);
   }
 
   checkCollisions() {
-    this.checkCollisionsEnemy();
-    this.checkCollisionsBottles();
-    this.checkCollisionsCoins();
-    this.checkCollisionsEndboss();
+    setInterval(() => {
+      this.checkCollisionsEnemy();
+      this.checkCollisionsBottles();
+      this.checkCollisionsCoins();
+      this.checkCollisionsEndboss();
+    }, 1000 / 25);
   }
 
   checkCollisionsEnemy() {
-    setInterval(() => {
-      this.level.enemies.forEach((enemy) => {
-        if (this.character.isColliding(enemy)) {
-          this.character.hit();
-          this.healthBar.setPercentage(this.character.energy);
-        }
-      });
-    }, 200);
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy) && this.character.isAboveGround()) {
+        console.log("no hit");
+        this.chickenDied(enemy);
+      } else if (
+        this.character.isColliding(enemy) &&
+        !this.character.isAboveGround() &&
+        enemy.chickenAlive
+      ) {
+        console.log("hit");
+        this.character.hit();
+        this.healthBar.setPercentage(this.character.energy);
+      }
+    });
+  }
+
+  chickenDied(enemy) {
+    if (enemy instanceof Pollito) {
+      enemy.chickenAlive = false;
+    }
   }
 
   checkCollisionsBottles() {
@@ -128,11 +141,11 @@ class World {
   }
 
   checkCollisionsCoins() {
-    this.level.coins.forEach((coin) => {
+    this.level.coins.forEach((coin, index) => {
       if (this.character.isColliding(coin)) {
         this.collectedCoins.push(coin);
-        this.level.coins.splice(coin, 1);
         this.coinBar.setPercentage(this.collectedCoins.length * 5);
+        this.level.coins.splice(index, 1);
         this.collect_coin.play();
       }
     });

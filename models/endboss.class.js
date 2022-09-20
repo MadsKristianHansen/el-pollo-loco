@@ -3,6 +3,7 @@ class Endboss extends MovableObject {
   width = 250;
   y = 55;
   hurt_chicken_sound = new Audio("audio/chicken_hurt.mp3");
+  chickenAlive = true;
 
   IMAGES_ALERT = [
     "img/4.Secuencias_Enemy_gigantón-Doña_Gallinota-/2.Ateción-ataque/1.Alerta/G5.png",

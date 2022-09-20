@@ -4,6 +4,7 @@ let keyboard = new Keyboard();
 
 function init() {
   canvas = document.getElementById("canvas");
+  level1 = initLevel1();
   world = new World(canvas, keyboard);
 
   console.log("My Character is", world.character);
