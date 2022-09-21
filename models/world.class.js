@@ -16,6 +16,7 @@ class World {
   collect_coin = new Audio("audio/collect_coin.mp3");
   collect_bottle_sound = new Audio("audio/bottle_collect.mp3");
   throw_bottle_sound = new Audio("audio/bottle_throw.mp3");
+  game_music = new Audio("audio/bg_music.wav");
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -24,6 +25,21 @@ class World {
     this.draw();
     this.setWorld();
     this.runChecks();
+    this.playMusic();
+  }
+
+  playMusic() {
+    this.game_music.volume = 0.2;
+    this.game_music.play();
+
+    this.game_music.addEventListener(
+      "ended",
+      function () {
+        this.currentTime = 0;
+        this.play();
+      },
+      false
+    );
   }
 
   setWorld() {

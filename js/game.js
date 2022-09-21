@@ -1,13 +1,35 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let isFullscreen = false;
 
 function init() {
   canvas = document.getElementById("canvas");
   level1 = initLevel1();
   world = new World(canvas, keyboard);
+}
 
-  console.log("My Character is", world.character);
+function start() {
+  init();
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("canvas").style.display = "flex";
+  document.getElementById("fullscreen").style.display = "flex";
+  document.getElementById("tryAgain").style.display = "flex";
+  document.getElementById("start").style.display = "none";
+}
+
+function showFullscreen() {
+  if (isFullscreen == false) {
+    canvas.requestFullscreen();
+    isFullscreen = true;
+  } else {
+    document.exitFullscreen();
+    isFullscreen = false;
+  }
+}
+
+function showControls() {
+  document.querySelector(".d-none").classList.toggle("d-flex");
 }
 
 window.addEventListener("keydown", (e) => {

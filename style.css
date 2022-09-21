@@ -2,8 +2,238 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url("img/5.Fondo/Completo.png");
+  height: 100vh;
+  opacity: 0.5;
+  z-index: 0;
+}
+
+#startContainer {
+  width: 720px;
+  height: 480px;
+  z-index: 1;
+}
+
+#backgroundStart {
+  position: absolute;
+  width: 720px;
+  height: 480px;
+}
+
+#backgroundGameOver {
+  position: absolute;
+  width: 720px;
+  height: 480px;
+  display: none;
+}
+
+#backgroundYouLost {
+  position: absolute;
+  width: 720px;
+  height: 480px;
+  display: none;
+}
+
+#controlsContainer {
+  position: absolute;
+  width: 720px;
+  height: 480px;
+  background-color: #ffffffe6;
+  opacity: 0.9;
+  z-index: 3;
+}
+
+.controls_head {
+  height: 150px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-family: "Varela Round", sans-serif;
+}
+
+.control {
+  display: flex;
+  justify-content: center;
+  height: 70px;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.control-column {
+  width: 190px;
+}
+
+.control-sub {
+  font-family: "Varela Round", sans-serif;
+  font-size: 24px;
+  height: 68px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+}
+
+.icon-size {
+  width: 68px;
+  height: 68px;
+}
+
+.d-none {
+  display: none;
+}
+
+.d-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#startScreen {
+  position: relative;
+  width: 720px;
+  height: 480px;
 }
 
 canvas {
   background-color: black;
+  display: none;
+}
+
+.navBar {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 720px;
+  height: 60px;
+  font-family: "Varela Round", sans-serif;
+  font-size: 30px;
+  color: black;
+  z-index: 2;
+}
+
+.info {
+  margin-bottom: 20px;
+  font-size: 22px;
+  font-family: "Varela Round", sans-serif;
+  width: 720px;
+  text-align: center;
+  z-index: 1;
+}
+
+#start {
+  padding: 10px;
+  border-radius: 0px;
+  background-color: #ffd50069;
+  border: 1px solid #f7931e;
+  color: #795548;
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%),
+    0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+
+#start:hover {
+  cursor: pointer;
+  background-color: #ffd500;
+}
+
+#controls {
+  padding: 10px;
+  border-radius: 0px;
+  background-color: #ffd50069;
+  border: 1px solid #f7931e;
+  color: #795548;
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%),
+    0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+
+#controls:hover {
+  cursor: pointer;
+  background-color: #ffd500;
+}
+
+#fullscreen {
+  padding: 10px;
+  border-radius: 0px;
+  background-color: #ffd50069;
+  border: 1px solid #f7931e;
+  color: #795548;
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%),
+    0 1px 5px 0 rgb(0 0 0 / 12%);
+  display: none;
+}
+
+#fullscreen:hover {
+  cursor: pointer;
+  background-color: #ffd500;
+}
+
+#tryAgain {
+  padding: 10px;
+  border-radius: 0px;
+  background-color: #ffd50069;
+  border: 1px solid #f7931e;
+  color: #795548;
+  box-shadow: 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 20%),
+    0 1px 5px 0 rgb(0 0 0 / 12%);
+  display: none;
+}
+
+#tryAgain:hover {
+  cursor: pointer;
+  background-color: #ffd500;
+}
+
+.tryAgain-a {
+  color: #795548;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.credits {
+  margin-top: 30px;
+  color: black;
+  font-size: 19px;
+  z-index: 1;
+  width: 720px;
+  text-align: center;
+  background-color: #00000045;
+  border: 1px solid white;
+}
+
+.credit_a {
+  color: blue;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 720px) {
+  canvas {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-height: 480px) {
+  canvas {
+    height: 100vh;
+  }
 }

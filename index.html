@@ -26,9 +26,72 @@
     <script src="js/game.js"></script>
 </head>
 
-<body onload="init()">
-    <h1>El Pollo Loco</h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
+<body>
+
+    <div class="background"></div>
+
+    <div class="info">
+        Help Pepe save the sonoran desert from the raging 'EL POLLO LOCO'! <br>
+        Beware its gruesome, all-pecking polluelos and give EPL the salsa it deserves!
+        Vamos!
+    </div>
+
+    <div id="startContainer">
+        <div id="controlsContainer" class="d-none">
+            <div class="controls_head" style="margin-top: 40px;">
+                KEYBOARD CONTROLS
+            </div>
+
+            <div class="controls">
+                <div class="control-column">
+                    <div class="control" style="justify-content: space-evenly;">
+                        <img class="control-sub icon-size" src="img/Extra/arrow-left2.png">
+                        <img class="control-sub icon-size" src="img/Extra/arrow-right2.png">
+                    </div>
+                    <div class="control">
+                        <img class="control-sub icon-size" src="img/Extra/key-space.png">
+                    </div>
+                    <div class="control">
+                        <img class="control-sub icon-size" src="img/Extra/key-d.png">
+                    </div>
+                </div>
+                <div class="control-column">
+                    <div class="control-sub">Walk</div>
+                    <div class="control-sub">Jump</div>
+                    <div class="control-sub">Throw bottle</div>
+                </div>
+            </div>
+
+        </div>
+        <div id="startScreen">
+            <img id="backgroundStart" src="img/9.Intro _ Outro Image/Start Screen/Opción2.png">
+        </div>
+        <canvas id="canvas" width="720px" height="480px"></canvas>
+    </div>
+
+    <div class="navBar">
+        <div id="start" onclick="start()">Start</div>
+        <div id="controls" onclick="showControls()">Controls</div>
+        <div id="fullscreen" onclick="showFullscreen()">Fullscreen</div>
+        <div id="tryAgain"><a href="index.html" class="tryAgain-a">Try again</a></a></div>
+    </div>
+
+    <div class="credits">
+        This game uses this sound from freesound:
+        "Cartoon Game Theme Loop 3" by Mrthenoronha
+        (<a href="https://freesound.org/s/513427/" class="credit_a" target="_blank">https://freesound.org/s/513427/</a>)
+        licensed under CC BY-NC 3.0
+        <br>
+        <a target="_blank" href="https://icons8.com/icon/TZOYuLKRl67x/d-key">D Key</a> icon by <a target="_blank"
+            href="https://icons8.com">Icons8</a>
+        <a target="_blank" href="https://icons8.com/icon/ZARLfT5EzRoz/space-key">Space Key</a> icon by <a
+            target="_blank" href="https://icons8.com">Icons8</a>
+        <a target="_blank" href="https://icons8.com/icon/oBVDeA_uGf8l/home-button">Home Button</a> icon by <a
+            target="_blank" href="https://icons8.com">Icons8</a>
+        <a target="_blank" href="https://icons8.com/icon/RFG_gQ_1ZKo8/end-button">End Button</a> icon by <a
+            target="_blank" href="https://icons8.com">Icons8</a>
+    </div>
+
 </body>
 
 </html>
