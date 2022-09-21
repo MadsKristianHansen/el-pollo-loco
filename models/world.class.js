@@ -4,6 +4,7 @@ class World {
   ctx;
   canvas;
   coinBonus = false;
+  gameOver = false;
   keyboard;
   camera_x = 0;
   healthBar = new StatusBar(20, 0, 100, 1);
@@ -17,6 +18,12 @@ class World {
   collect_bottle_sound = new Audio("audio/bottle_collect.mp3");
   throw_bottle_sound = new Audio("audio/bottle_throw.mp3");
   game_music = new Audio("audio/bg_music.wav");
+  won_sound = new Audio("audio/won.mp3");
+  lost_sound = new Audio("audio/lost.mp3");
+  game_over = new Audio("audio/game_over.mp3");
+  chicken_hurt_sound = new Audio("audio/chicken_hurt.mp3");
+  pollito_hurt_sound = new Audio("audio/smash.mp3");
+  endboss_death_scream = new Audio("audio/death_scream.mp3");
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -127,22 +134,25 @@ class World {
   checkCollisionsEnemy() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy) && this.character.isAboveGround()) {
-        console.log("no hit");
         this.chickenDied(enemy);
       } else if (
         this.character.isColliding(enemy) &&
         !this.character.isAboveGround() &&
         enemy.chickenAlive
       ) {
-        console.log("hit");
         this.character.hit();
-        this.healthBar.setPercentage(this.character.energy);
+        if (this.character.isDead() && !this.gameOver) {
+          this.displayYouLost();
+        } else {
+          this.healthBar.setPercentage(this.character.energy);
+        }
       }
     });
   }
 
   chickenDied(enemy) {
-    if (enemy instanceof Pollito) {
+    if (enemy instanceof Pollito && enemy.chickenAlive && !this.gameOver) {
+      this.pollito_hurt_sound.play();
       enemy.chickenAlive = false;
     }
   }
@@ -153,7 +163,9 @@ class World {
         this.collectedBottles.push(bottle);
         this.bottleBar.setPercentage(this.collectedBottles.length * 5);
         this.level.bottles.splice(bottle, 1);
-        this.collect_bottle_sound.play();
+        if (!this.gameOver) {
+          this.collect_bottle_sound.play();
+        }
       }
     });
   }
@@ -164,7 +176,10 @@ class World {
         this.collectedCoins.push(coin);
         this.coinBar.setPercentage(this.collectedCoins.length * 5);
         this.level.coins.splice(index, 1);
-        this.collect_coin.play();
+        this.collect_coin.volume = 1;
+        if (!this.gameOver) {
+          this.collect_coin.play();
+        }
       }
     });
   }
@@ -182,10 +197,19 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (to.isColliding(enemy) && enemy instanceof Endboss) {
           enemy.hit();
-
-          enemy.isHurt();
-          this.endbossBar.setPercentage(enemy.energy);
-        } else if (to.isColliding(enemy) && enemy instanceof Chicken) {
+          if (enemy.isDead() && !this.gameOver) {
+            this.displayYouWon();
+          } else {
+            enemy.isHurt();
+            this.endbossBar.setPercentage(enemy.energy);
+          }
+        } else if (
+          to.isColliding(enemy) &&
+          enemy instanceof Chicken &&
+          enemy.chickenAlive &&
+          !this.gameOver
+        ) {
+          this.chicken_hurt_sound.play();
           enemy.chickenAlive = false;
         }
       });
@@ -201,7 +225,42 @@ class World {
       this.throwableObjects.push(bottle);
       this.collectedBottles.pop();
       this.bottleBar.setPercentage(this.collectedBottles.length * 5);
-      this.throw_bottle_sound.play();
+      if (!this.gameOver) {
+        this.throw_bottle_sound.play();
+      }
     }
+  }
+
+  displayYouWon() {
+    if (!this.gameOver) {
+      this.game_music.pause();
+      this.endboss_death_scream.play();
+      this.won_sound.play();
+    }
+    this.gameOver = true;
+    this.setWorld();
+    setTimeout(function () {
+      document.getElementById("startScreen").style.display = "flex";
+      document.getElementById("backgroundStart").style.display = "none";
+      document.getElementById("backgroundGameOver").style.display = "flex";
+      document.getElementById("canvas").style.display = "none";
+    }, 3000);
+  }
+
+  displayYouLost() {
+    if (!this.gameOver) {
+      this.game_music.pause();
+      this.lost_sound.play();
+      this.game_over.play();
+    }
+    this.gameOver = true;
+    this.setWorld();
+    setTimeout(function () {
+      document.getElementById("startScreen").style.display = "flex";
+      document.getElementById("backgroundStart").style.display = "none";
+      document.getElementById("canvas").style.display = "none";
+      document.getElementById("backgroundGameOver").style.display = "none";
+      document.getElementById("backgroundYouLost").style.display = "flex";
+    }, 2000);
   }
 }

@@ -2,7 +2,7 @@ class Endboss extends MovableObject {
   height = 400;
   width = 250;
   y = 55;
-  hurt_chicken_sound = new Audio("audio/chicken_hurt.mp3");
+  hurt_endboss_sound = new Audio("audio/endboss_hurt.mp3");
   chickenAlive = true;
   speed = 50;
   damageTaken = 3;
@@ -66,7 +66,7 @@ class Endboss extends MovableObject {
         this.playAnimation(this.IMAGES_DEAD);
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HIT);
-        this.hurt_chicken_sound.play();
+        this.hurt_endboss_sound.play();
       } else if (this.energy < 100 && this.energy > 80) {
         this.playAnimation(this.IMAGES_WALKING);
         if (this.otherDirection && this.x < 3400) {
