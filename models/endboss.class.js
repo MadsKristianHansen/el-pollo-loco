@@ -4,7 +4,7 @@ class Endboss extends MovableObject {
   y = 55;
   hurt_endboss_sound = new Audio("audio/endboss_hurt.mp3");
   chickenAlive = true;
-  speed = 50;
+  speed = 100;
   damageTaken = 3;
 
   IMAGES_ALERT = [
