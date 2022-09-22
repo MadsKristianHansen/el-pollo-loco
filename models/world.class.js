@@ -55,31 +55,33 @@ class World {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.ctx.translate(this.camera_x, 0);
-
     this.addObjectsToMap(this.level.backgroundObjects);
-
+    this.drawMoveableStatusbars();
+    this.drawFrontObjects();
     this.ctx.translate(-this.camera_x, 0);
-    this.addToMap(this.healthBar);
-    this.addToMap(this.bottleBar);
-    this.addToMap(this.coinBar);
-    this.addToMap(this.endbossBar);
-    this.ctx.translate(this.camera_x, 0);
+    let self = this;
+    requestAnimationFrame(function () {
+      self.draw();
+    });
+  }
 
+  drawFrontObjects() {
     this.addObjectsToMap(this.level.clouds);
     this.addToMap(this.character);
     this.addObjectsToMap(this.level.bottles);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.enemies);
     this.addObjectsToMap(this.throwableObjects);
+  }
 
+  drawMoveableStatusbars() {
     this.ctx.translate(-this.camera_x, 0);
-
-    let self = this;
-    requestAnimationFrame(function () {
-      self.draw();
-    });
+    this.addToMap(this.healthBar);
+    this.addToMap(this.bottleBar);
+    this.addToMap(this.coinBar);
+    this.addToMap(this.endbossBar);
+    this.ctx.translate(this.camera_x, 0);
   }
 
   addObjectsToMap(objects) {
@@ -135,11 +137,7 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy) && this.character.isAboveGround()) {
         this.chickenDied(enemy);
-      } else if (
-        this.character.isColliding(enemy) &&
-        !this.character.isAboveGround() &&
-        enemy.chickenAlive
-      ) {
+      } else if (this.characterHitByChicken(enemy)) {
         this.character.hit();
         if (this.character.isDead() && !this.gameOver) {
           this.displayYouLost();
@@ -148,6 +146,14 @@ class World {
         }
       }
     });
+  }
+
+  characterHitByChicken(enemy) {
+    return (
+      this.character.isColliding(enemy) &&
+      !this.character.isAboveGround() &&
+      enemy.chickenAlive
+    );
   }
 
   chickenDied(enemy) {
@@ -197,23 +203,31 @@ class World {
       this.level.enemies.forEach((enemy) => {
         if (to.isColliding(enemy) && enemy instanceof Endboss) {
           enemy.hit();
-          if (enemy.isDead() && !this.gameOver) {
-            this.displayYouWon();
-          } else {
-            enemy.isHurt();
-            this.endbossBar.setPercentage(enemy.energy);
-          }
-        } else if (
-          to.isColliding(enemy) &&
-          enemy instanceof Chicken &&
-          enemy.chickenAlive &&
-          !this.gameOver
-        ) {
+          this.checkYouWon(enemy);
+        } else if (this.aliveChickenCollision(to, enemy)) {
           this.chicken_hurt_sound.play();
           enemy.chickenAlive = false;
         }
       });
     });
+  }
+
+  aliveChickenCollision(to, enemy) {
+    return (
+      to.isColliding(enemy) &&
+      enemy instanceof Chicken &&
+      enemy.chickenAlive &&
+      !this.gameOver
+    );
+  }
+
+  checkYouWon(enemy) {
+    if (enemy.isDead() && !this.gameOver) {
+      this.displayYouWon();
+    } else {
+      enemy.isHurt();
+      this.endbossBar.setPercentage(enemy.energy);
+    }
   }
 
   checkThrowObjects() {
@@ -233,9 +247,7 @@ class World {
 
   displayYouWon() {
     if (!this.gameOver) {
-      this.game_music.pause();
-      this.endboss_death_scream.play();
-      this.won_sound.play();
+      this.setYouWonMusic();
     }
     this.gameOver = true;
     this.setWorld();
@@ -249,9 +261,7 @@ class World {
 
   displayYouLost() {
     if (!this.gameOver) {
-      this.game_music.pause();
-      this.lost_sound.play();
-      this.game_over.play();
+      this.setGameOverMusic();
     }
     this.gameOver = true;
     this.setWorld();
@@ -262,5 +272,17 @@ class World {
       document.getElementById("backgroundGameOver").style.display = "none";
       document.getElementById("backgroundYouLost").style.display = "flex";
     }, 2000);
+  }
+
+  setYouWonMusic() {
+    this.game_music.pause();
+    this.endboss_death_scream.play();
+    this.won_sound.play();
+  }
+
+  setGameOverMusic() {
+    this.game_music.pause();
+    this.lost_sound.play();
+    this.game_over.play();
   }
 }

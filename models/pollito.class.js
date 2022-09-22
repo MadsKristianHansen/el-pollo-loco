@@ -23,12 +23,19 @@ class Pollito extends MovableObject {
   }
 
   animate() {
+    this.movement();
+    this.animation();
+  }
+
+  movement() {
     setInterval(() => {
       if (this.chickenAlive) {
         this.moveLeft();
       }
     }, 1000 / 60);
+  }
 
+  animation() {
     setInterval(() => {
       if (this.chickenAlive) {
         this.playAnimation(this.IMAGES_WALKING);

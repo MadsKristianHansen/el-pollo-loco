@@ -77,42 +77,55 @@ class Character extends MovableObject {
     this.applyGravity();
   }
 
-  animate() {
+  checkMoveRight() {
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+      this.moveRight();
+      this.otherDirection = false;
+      if (!this.world.gameOver) {
+        this.walking_sound.play();
+      }
+    }
+  }
+
+  checkMoveLeft() {
+    if (this.world.keyboard.LEFT && this.x > 0) {
+      this.moveLeft();
+      this.otherDirection = true;
+      if (!this.world.gameOver) {
+        this.walking_sound.play();
+      }
+    }
+  }
+
+  checkJump() {
+    if (this.world.keyboard.SPACE && !this.isAboveGround()) {
+      this.jump();
+      if (!this.world.gameOver) {
+        this.jump_sound.play();
+      }
+    }
+  }
+
+  movements() {
     setInterval(() => {
       this.walking_sound.pause();
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-        this.moveRight();
-        this.otherDirection = false;
-        if (!this.world.gameOver) {
-          this.walking_sound.play();
-        }
-      }
-
-      if (this.world.keyboard.LEFT && this.x > 0) {
-        this.moveLeft();
-        this.otherDirection = true;
-        if (!this.world.gameOver) {
-          this.walking_sound.play();
-        }
-      }
-
-      if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-        this.jump();
-        if (!this.world.gameOver) {
-          this.jump_sound.play();
-        }
-      }
-
+      this.checkMoveRight();
+      this.checkMoveLeft();
+      this.checkJump();
       this.world.camera_x = -this.x + 100;
     }, 1000 / 60);
+  }
 
+  checkWalkingAnimation() {
+    return (
+      (this.world.keyboard.RIGHT && !this.isAboveGround() && !this.isDead()) ||
+      (this.world.keyboard.LEFT && !this.isAboveGround() && !this.isDead())
+    );
+  }
+
+  checkAnimationInterval1() {
     setInterval(() => {
-      if (
-        (this.world.keyboard.RIGHT &&
-          !this.isAboveGround() &&
-          !this.isDead()) ||
-        (this.world.keyboard.LEFT && !this.isAboveGround() && !this.isDead())
-      ) {
+      if (this.checkWalkingAnimation()) {
         this.playAnimation(this.IMAGES_WALKING);
       } else if (this.isHurt()) {
         this.playAnimation(this.IMAGES_HURT);
@@ -125,18 +138,29 @@ class Character extends MovableObject {
         this.playAnimation(this.IMAGES_WAIT);
       }
     }, 100);
+  }
 
+  checkAnimationInterval2() {
     setInterval(() => {
       if (this.isDead()) {
         this.playAnimation(this.IMAGES_DEAD);
       }
     }, 75);
+  }
 
+  checkAnimationInterval3() {
     setInterval(() => {
       if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
       }
     }, 193);
+  }
+
+  animate() {
+    this.movements();
+    this.checkAnimationInterval1();
+    this.checkAnimationInterval2();
+    this.checkAnimationInterval3();
   }
 
   jump() {
